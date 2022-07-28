@@ -43,7 +43,7 @@
 #define DARWIN_REENUMERATE_TIMEOUT_US (10 * USEC_PER_SEC)
 
 #include <AvailabilityMacros.h>
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= 1060 && MAC_OS_X_VERSION_MIN_REQUIRED < 101200
+#if 0
   #include <objc/objc-auto.h>
 #endif
 
@@ -467,13 +467,13 @@ static void *darwin_event_thread_main (void *arg0) {
   CFRunLoopSourceRef libusb_shutdown_cfsource;
   CFRunLoopSourceContext libusb_shutdown_cfsourcectx;
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= 1060
+#if 1
   /* Set this thread's name, so it can be seen in the debugger
      and crash reports. */
   pthread_setname_np ("org.libusb.device-hotplug");
 #endif
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= 1060 && MAC_OS_X_VERSION_MIN_REQUIRED < 101200
+#if 0
   /* Tell the Objective-C garbage collector about this thread.
      This is required because, unlike NSThreads, pthreads are
      not automatically registered. Although we don't use
@@ -1154,10 +1154,10 @@ static enum libusb_error process_new_device (struct libusb_context *ctx, struct 
     case kUSBDeviceSpeedLow: dev->speed = LIBUSB_SPEED_LOW; break;
     case kUSBDeviceSpeedFull: dev->speed = LIBUSB_SPEED_FULL; break;
     case kUSBDeviceSpeedHigh: dev->speed = LIBUSB_SPEED_HIGH; break;
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= 1080
+#if 1
     case kUSBDeviceSpeedSuper: dev->speed = LIBUSB_SPEED_SUPER; break;
 #endif
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= 101200
+#if 1
     case kUSBDeviceSpeedSuperPlus: dev->speed = LIBUSB_SPEED_SUPER_PLUS; break;
 #endif
     default:
@@ -1780,7 +1780,7 @@ static int darwin_reenumerate_device (struct libusb_device_handle *dev_handle, b
   /* if we need to release capture */
   if (HAS_CAPTURE_DEVICE()) {
     if (capture) {
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= 101000
+#if 1
       options |= kUSBReEnumerateCaptureDeviceMask;
 #endif
     }
@@ -2381,7 +2381,7 @@ static int darwin_handle_transfer_completion (struct usbi_transfer *itransfer) {
 
 void usbi_get_monotonic_time(struct timespec *tp) {
 /* Check if the SDK is new enough to declare clock_gettime(), and the deployment target is at least 10.12. */
-#if ((MAC_OS_X_VERSION_MAX_ALLOWED >= 101200) && (MAC_OS_X_VERSION_MIN_REQUIRED >= 101200))
+#if 1
   clock_gettime(CLOCK_MONOTONIC, tp);
 #else
   mach_timebase_info_data_t machTimeBaseInfo;
@@ -2400,7 +2400,7 @@ void usbi_get_monotonic_time(struct timespec *tp) {
 
 void usbi_get_real_time(struct timespec *tp) {
 /* Check if the SDK is new enough to declare clock_gettime(), and the deployment target is at least 10.12. */
-#if ((MAC_OS_X_VERSION_MAX_ALLOWED >= 101200) && (MAC_OS_X_VERSION_MIN_REQUIRED >= 101200))
+#if 1
   clock_gettime(CLOCK_REALTIME, tp);
 #else
   struct timeval tv;
